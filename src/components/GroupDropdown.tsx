@@ -3,8 +3,8 @@
 import { useRef, useEffect, useState } from "react";
 
 export default function GroupDropdown() {
-    const [groups, setGroups] = useState(["개인", "팀1", "스터디"]);
-    const [selected, setSelected] = useState("개인");
+    const [groups, setGroups] = useState(["전체보기", "개인", "팀1", "스터디"]);
+    const [selected, setSelected] = useState("전체보기");
     const [open, setOpen] = useState(false);
 
     const dropdownRef = useRef<HTMLDivElement>(null);

@@ -15,15 +15,15 @@ export default function Header() {
                 <GroupDropdown />
             </div>
             <nav className="space-x-4">
-                <a href="/" className="text-gray-700 hover:text-blue-600">
+                {/* <a href="/" className="text-gray-700 hover:text-blue-600">
                     홈
-                </a>
+                </a> */}
                 <a href="/login" className="text-gray-700 hover:text-blue-600">
                     로그인
                 </a>
-                <a href="/todo" className="text-gray-700 hover:text-blue-600">
+                {/* <a href="/todo" className="text-gray-700 hover:text-blue-600">
                     할 일
-                </a>
+                </a> */}
             </nav>
         </header>
     );
