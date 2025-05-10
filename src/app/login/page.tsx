@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { login } from "@/api/auth";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function LoginPage() {
     const [username, setUsername] = useState("");
@@ -22,32 +23,53 @@ export default function LoginPage() {
     };
 
     return (
-        <div className="max-w-md mx-auto p-6 bg-white rounded shadow mt-12">
-            <h1 className="text-2xl font-bold mb-4 text-center">로그인</h1>
+        <main className="flex flex-col items-center justify-start min-h-screen pt-16 px-4">
+            <div className="w-full max-w-md bg-white rounded-2xl shadow-md p-6">
+                <h1 className="text-2xl font-bold text-center mb-6 text-blue-600">
+                    로그인
+                </h1>
 
-            <input
-                type="text"
-                placeholder="아이디"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                className="w-full mb-3 px-4 py-2 border rounded"
-            />
-            <input
-                type="password"
-                placeholder="비밀번호"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full mb-4 px-4 py-2 border rounded"
-            />
+                <div className="space-y-4">
+                    <input
+                        type="text"
+                        placeholder="아이디 (username)"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        className="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    />
+                    <input
+                        type="password"
+                        placeholder="비밀번호"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        className="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    />
 
-            {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+                    {error && (
+                        <p className="text-red-500 text-sm text-center">
+                            {error}
+                        </p>
+                    )}
 
-            <button
-                onClick={handleLogin}
-                className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
-            >
-                로그인
-            </button>
-        </div>
+                    <button
+                        onClick={handleLogin}
+                        className="w-full bg-blue-500 text-white py-2 rounded-xl hover:bg-blue-600 transition"
+                    >
+                        로그인
+                    </button>
+
+                    {/* ✅ 회원가입 링크 추가 */}
+                    <p className="text-center text-sm text-gray-500 mt-4">
+                        아직 계정이 없나요?{" "}
+                        <Link
+                            href="/signup"
+                            className="text-blue-500 hover:underline"
+                        >
+                            회원가입
+                        </Link>
+                    </p>
+                </div>
+            </div>
+        </main>
     );
 }

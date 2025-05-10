@@ -35,14 +35,14 @@ export default function GroupDropdown() {
         <div className="relative inline-block text-left" ref={dropdownRef}>
             <button
                 onClick={() => setOpen(!open)}
-                className="inline-flex items-center px-3 py-2 bg-white border rounded hover:bg-gray-50"
+                className="inline-flex items-center px-3 py-2 bg-white border rounded hover:bg-gray-50 text-black"
             >
                 {selected}
                 <span className="ml-2">⌄</span>
             </button>
 
             {open && (
-                <div className="absolute z-10 mt-2 w-40 bg-white border rounded shadow">
+                <div className="absolute z-10 mt-2 w-40 bg-white border rounded shadow text-black">
                     {groups.map((group) => (
                         <div
                             key={group}
