@@ -1,4 +1,5 @@
-import { GraphHelpers } from "next/dist/compiled/webpack/webpack";
+"use client";
+
 import Link from "next/link";
 import GroupDropdown from "./GroupDropdown";
 
@@ -13,6 +14,13 @@ export default function Header() {
                 </Link>
 
                 <GroupDropdown />
+
+                <Link
+                    href="/groups/create"
+                    className="text-sm px-3 py-1.5 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+                >
+                    + 그룹 추가
+                </Link>
             </div>
             <nav className="space-x-4">
                 {/* <a href="/" className="text-gray-700 hover:text-blue-600">

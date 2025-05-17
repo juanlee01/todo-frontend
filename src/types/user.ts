@@ -13,3 +13,9 @@ export interface GroupMember {
     email?: string;
     role: "LEADER" | "MEMBER" | "GUEST";
 }
+
+// export interface GroupInfo {
+//     id: number;
+//     title: string;
+//     role: "LEADER" | "MEMBER" | "GUEST";
+// }

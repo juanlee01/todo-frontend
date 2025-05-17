@@ -15,7 +15,6 @@ export default function SignupPage() {
     const router = useRouter();
 
     const [passwordConfirmValid, setPasswordConfirmValid] = useState(false);
-
     const [passwordValid, setPasswordValid] = useState({
         hasLetter: false,
         hasNumber: false,
@@ -24,7 +23,6 @@ export default function SignupPage() {
 
     const handlePasswordChange = (value: string) => {
         setPassword(value);
-
         setPasswordValid({
             hasLetter: /[A-Za-z]/.test(value),
             hasNumber: /\d/.test(value),
@@ -42,20 +40,16 @@ export default function SignupPage() {
             setError("아이디와 이메일 중복확인을 해주세요.");
             return;
         }
-
         if (!username.trim() || !password.trim() || !email.trim()) {
             setError("아이디, 이메일, 비밀번호를 모두 입력해주세요.");
             return;
         }
-
-        const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
-        if (!passwordRegex.test(password)) {
+        if (!/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(password)) {
             setError(
                 "비밀번호는 최소 8자 이상, 영어와 숫자를 포함해야 합니다."
             );
             return;
         }
-
         if (password !== passwordConfirm) {
             setError("비밀번호가 일치하지 않습니다.");
             return;
@@ -74,15 +68,13 @@ export default function SignupPage() {
     const handleCheckUsername = async () => {
         try {
             const res = await checkUsername(username);
-            if (res.available) {
-                alert("사용 가능한 아이디입니다!");
-                setUsernameChecked(true);
-            } else {
-                alert("이미 사용 중인 아이디입니다.");
-                setUsernameChecked(false);
-            }
-        } catch (err) {
-            console.error("아이디 중복확인 실패", err);
+            alert(
+                res.available
+                    ? "사용 가능한 아이디입니다!"
+                    : "이미 사용 중인 아이디입니다."
+            );
+            setUsernameChecked(res.available);
+        } catch {
             setUsernameChecked(false);
         }
     };
@@ -90,15 +82,13 @@ export default function SignupPage() {
     const handleCheckEmail = async () => {
         try {
             const res = await checkEmail(email);
-            if (res.available) {
-                alert("사용 가능한 이메일입니다!");
-                setEmailChecked(true);
-            } else {
-                alert("이미 사용 중인 이메일입니다.");
-                setEmailChecked(false);
-            }
-        } catch (err) {
-            console.error("이메일 중복확인 실패", err);
+            alert(
+                res.available
+                    ? "사용 가능한 이메일입니다!"
+                    : "이미 사용 중인 이메일입니다."
+            );
+            setEmailChecked(res.available);
+        } catch {
             setEmailChecked(false);
         }
     };
@@ -112,67 +102,68 @@ export default function SignupPage() {
         emailChecked;
 
     return (
-        <main className="flex flex-col items-center justify-start min-h-screen pt-16 px-4">
-            <div className="w-full max-w-md bg-white rounded-2xl shadow-md p-6">
-                <h1 className="text-2xl font-bold text-center mb-6 text-blue-600">
+        <main className="flex flex-col items-center justify-start min-h-screen pt-16 px-4 bg-[#f9fafb] text-[#111827]">
+            <div className="w-full max-w-md bg-[#ffffff] rounded-2xl shadow-md p-6">
+                <h1 className="text-2xl font-bold text-center mb-6 text-[#2563eb]">
                     회원가입
                 </h1>
 
                 <div className="space-y-4">
-                    {/* 아이디 입력 + 중복 확인 */}
+                    {/* 아이디 */}
                     <div className="flex gap-2">
                         <input
                             type="text"
-                            placeholder="아이디 (username)"
+                            placeholder="아이디"
                             value={username}
                             onChange={(e) => {
                                 setUsername(e.target.value);
                                 setUsernameChecked(false);
                             }}
-                            className="flex-1 px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
+                            className="flex-1 px-4 py-2 border border-[#d1d5db] rounded-xl bg-[#ffffff] text-[#111827] focus:outline-none focus:ring-2 focus:ring-[#60a5fa]"
                         />
                         <button
                             onClick={handleCheckUsername}
-                            className="px-3 py-2 bg-gray-200 rounded-xl text-sm hover:bg-gray-300"
+                            className="px-3 py-2 bg-[#e5e7eb] rounded-xl text-sm text-[#111827] hover:bg-[#d1d5db]"
                         >
                             중복확인
                         </button>
                     </div>
 
-                    {/* 이메일 입력 + 중복 확인 */}
+                    {/* 이메일 */}
                     <div className="flex gap-2">
                         <input
                             type="email"
-                            placeholder="이메일 (email)"
+                            placeholder="이메일"
                             value={email}
                             onChange={(e) => {
                                 setEmail(e.target.value);
                                 setEmailChecked(false);
                             }}
-                            className="flex-1 px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
+                            className="flex-1 px-4 py-2 border border-[#d1d5db] rounded-xl bg-[#ffffff] text-[#111827] focus:outline-none focus:ring-2 focus:ring-[#60a5fa]"
                         />
                         <button
                             onClick={handleCheckEmail}
-                            className="px-3 py-2 bg-gray-200 rounded-xl text-sm hover:bg-gray-300"
+                            className="px-3 py-2 bg-[#e5e7eb] rounded-xl text-sm text-[#111827] hover:bg-[#d1d5db]"
                         >
                             중복확인
                         </button>
                     </div>
 
-                    {/* 비밀번호 입력 */}
+                    {/* 비밀번호 */}
                     <input
                         type="password"
                         placeholder="비밀번호"
                         value={password}
                         onChange={(e) => handlePasswordChange(e.target.value)}
-                        className="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        className="w-full px-4 py-2 border border-[#d1d5db] rounded-xl bg-[#ffffff] text-[#111827] focus:outline-none focus:ring-2 focus:ring-[#60a5fa]"
                     />
-                    {/* 비밀번호 생성 조건 */}
-                    <div className="flex flex-wrap gap-4 text-sm text-gray-600 mt-2 justify-center">
+
+                    {/* 조건 */}
+                    <div className="flex flex-wrap gap-4 text-sm justify-center">
                         <div
                             className={
                                 passwordValid.hasLetter
-                                    ? "text-green-500"
+                                    ? "text-green-600"
                                     : "text-red-500"
                             }
                         >
@@ -181,7 +172,7 @@ export default function SignupPage() {
                         <div
                             className={
                                 passwordValid.hasNumber
-                                    ? "text-green-500"
+                                    ? "text-green-600"
                                     : "text-red-500"
                             }
                         >
@@ -190,13 +181,14 @@ export default function SignupPage() {
                         <div
                             className={
                                 passwordValid.minLength
-                                    ? "text-green-500"
+                                    ? "text-green-600"
                                     : "text-red-500"
                             }
                         >
                             8자 이상
                         </div>
                     </div>
+
                     {/* 비밀번호 확인 */}
                     <input
                         type="password"
@@ -205,26 +197,23 @@ export default function SignupPage() {
                         onChange={(e) =>
                             handlePasswordConfirmChange(e.target.value)
                         }
-                        className="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        className="w-full px-4 py-2 border border-[#d1d5db] rounded-xl bg-[#ffffff] text-[#111827] focus:outline-none focus:ring-2 focus:ring-[#60a5fa]"
                     />
-                    <div className="flex gap-2 text-sm text-gray-600 mt-2 justify-center">
-                        <div className="flex items-center gap-1">
-                            {passwordConfirmValid ? "" : ""}
-                            <span
-                                className={
-                                    passwordConfirmValid
-                                        ? "text-green-500"
-                                        : "text-red-500"
-                                }
-                            >
-                                비밀번호 일치
-                            </span>
-                        </div>
+                    <div className="text-sm text-center">
+                        <span
+                            className={
+                                passwordConfirmValid
+                                    ? "text-green-600"
+                                    : "text-red-500"
+                            }
+                        >
+                            비밀번호 {passwordConfirmValid ? "일치" : "불일치"}
+                        </span>
                     </div>
 
                     {/* 에러 메시지 */}
                     {error && (
-                        <p className="text-red-500 text-sm text-center">
+                        <p className="text-[#ef4444] text-sm text-center">
                             {error}
                         </p>
                     )}
@@ -235,8 +224,8 @@ export default function SignupPage() {
                         disabled={!isSignupEnabled}
                         className={`w-full py-2 rounded-xl transition ${
                             isSignupEnabled
-                                ? "bg-blue-500 text-white hover:bg-blue-600"
-                                : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                                ? "bg-[#3b82f6] text-white hover:bg-[#2563eb]"
+                                : "bg-[#d1d5db] text-[#6b7280] cursor-not-allowed"
                         }`}
                     >
                         가입하기

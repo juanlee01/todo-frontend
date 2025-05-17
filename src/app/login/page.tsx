@@ -23,9 +23,9 @@ export default function LoginPage() {
     };
 
     return (
-        <main className="flex flex-col items-center justify-start min-h-screen pt-16 px-4">
-            <div className="w-full max-w-md bg-white rounded-2xl shadow-md p-6">
-                <h1 className="text-2xl font-bold text-center mb-6 text-blue-600">
+        <main className="flex flex-col items-center justify-start min-h-screen pt-16 px-4 bg-[#f9fafb] text-[#111827]">
+            <div className="w-full max-w-md bg-[#ffffff] rounded-2xl shadow-md p-6">
+                <h1 className="text-2xl font-bold text-center mb-6 text-[#2563eb]">
                     로그인
                 </h1>
 
@@ -35,35 +35,34 @@ export default function LoginPage() {
                         placeholder="아이디 (username)"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
-                        className="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        className="w-full px-4 py-2 border border-[#d1d5db] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#60a5fa] bg-[#ffffff] text-[#111827]"
                     />
                     <input
                         type="password"
                         placeholder="비밀번호"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        className="w-full px-4 py-2 border border-[#d1d5db] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#60a5fa] bg-[#ffffff] text-[#111827]"
                     />
 
                     {error && (
-                        <p className="text-red-500 text-sm text-center">
+                        <p className="text-[#ef4444] text-sm text-center">
                             {error}
                         </p>
                     )}
 
                     <button
                         onClick={handleLogin}
-                        className="w-full bg-blue-500 text-white py-2 rounded-xl hover:bg-blue-600 transition"
+                        className="w-full bg-[#3b82f6] text-white py-2 rounded-xl hover:bg-[#2563eb] transition"
                     >
                         로그인
                     </button>
 
-                    {/* ✅ 회원가입 링크 추가 */}
-                    <p className="text-center text-sm text-gray-500 mt-4">
+                    <p className="text-center text-sm text-[#6b7280] mt-4">
                         아직 계정이 없나요?{" "}
                         <Link
                             href="/signup"
-                            className="text-blue-500 hover:underline"
+                            className="text-[#3b82f6] hover:underline"
                         >
                             회원가입
                         </Link>

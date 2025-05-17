@@ -43,18 +43,18 @@ export default function StatusDropdown({ value, onChange }: Props) {
         <div className="relative inline-block text-left" ref={dropdownRef}>
             <button
                 onClick={() => setOpen(!open)}
-                className="inline-flex items-center px-3 py-2 bg-white border rounded hover:bg-gray-50 text-sm"
+                className="inline-flex items-center px-3 py-2 bg-white text-[#111827] border border-[#d1d5db] rounded hover:bg-[#f9fafb] text-sm"
             >
                 {selectedLabel}
                 <span className="ml-2">⌄</span>
             </button>
 
             {open && (
-                <div className="absolute z-10 mt-2 w-44 bg-white border rounded shadow text-sm">
+                <div className="absolute z-10 mt-2 w-44 bg-white text-[#111827] border border-[#d1d5db] rounded shadow text-sm">
                     {statusOptions.map((option) => (
                         <div
                             key={option.value}
-                            className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                            className="px-4 py-2 hover:bg-[#f3f4f6] cursor-pointer"
                             onClick={() => {
                                 onChange(option.value as TodoStatus);
                                 setOpen(false);
