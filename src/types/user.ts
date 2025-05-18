@@ -14,6 +14,21 @@ export interface GroupMember {
     role: "LEADER" | "MEMBER" | "GUEST";
 }
 
+export interface UserInfo {
+    userId: number;
+    username: string;
+    email: string;
+    createdAt: string;
+    //role?: string;
+}
+
+export interface UserProfile {
+    id: number;
+    username: string;
+    email: string;
+    createdAt: string; // LocalDateTime → 문자열로 전송됨
+}
+
 // export interface GroupInfo {
 //     id: number;
 //     title: string;

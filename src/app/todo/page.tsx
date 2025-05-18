@@ -149,6 +149,8 @@
 // }
 "use client";
 
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import { useState, useEffect } from "react";
 import StatusDropdown from "@/components/StatusDropdown";
 import {
@@ -159,7 +161,7 @@ import {
 } from "@/api/todo";
 import { Todo, TodoStatus } from "@/types/todo";
 import { useGroupStore } from "@/store/groupStore";
-import { updateTodo } from "@/api/todo";
+import { updateTodo, deleteTodo } from "@/api/todo";
 
 const statusOptions: { value: TodoStatus; label: string }[] = [
     { value: "PENDING", label: "⏳ 대기 중" },
@@ -181,6 +183,8 @@ export default function TodoPage() {
     const [editingTodoId, setEditingTodoId] = useState<number | null>(null);
     const [assignedTo, setAssignedTo] = useState<number>(1); // 기본값 로그인 유저 ID
     const [editMode, setEditMode] = useState(false);
+    //const [dueDate, setDueDate] = useState<string | null>(null);
+    const [dueDate, setDueDate] = useState<Date | null>(null);
 
     const handleEdit = (todo: Todo) => {
         setEditMode(true);
@@ -190,6 +194,7 @@ export default function TodoPage() {
         setTag(todo.tag ?? "");
         setStatus(todo.status);
         setAssignedTo(todo.assignedTo?.id ?? 1);
+        setDueDate(todo.dueDate ? new Date(todo.dueDate) : null);
     };
 
     const handleUpdate = async () => {
@@ -202,6 +207,7 @@ export default function TodoPage() {
                 status,
                 tag,
                 assignedTo,
+                dueDate: dueDate ? dueDate.toISOString().split("T")[0] : null,
             });
 
             setTodos((prev) =>
@@ -230,7 +236,8 @@ export default function TodoPage() {
                 body, // body는 optional
                 selectedGroupId === -1 || selectedGroupId === 0
                     ? null
-                    : selectedGroupId
+                    : selectedGroupId,
+                dueDate ? dueDate.toISOString().split("T")[0] : null // → "2025-05-21"
             );
             setTodos((prev) => [...prev, created]);
             setTitle("");
@@ -362,14 +369,30 @@ export default function TodoPage() {
                         value={tag}
                         onChange={(e) => setTag(e.target.value)}
                     />
-                    <input
+                    {/* <input
                         type="text"
                         className="flex-1 px-4 py-2 border border-[#d1d5db] bg-white text-[#111827] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#3b82f6]"
                         placeholder="내용 (선택)"
                         value={body}
                         onChange={(e) => setBody(e.target.value)}
+                    /> */}
+                    <DatePicker
+                        selected={dueDate}
+                        onChange={(date: Date | null) => setDueDate(date)}
+                        dateFormat="yyyy-MM-dd"
+                        placeholderText="마감일 선택"
+                        className="px-4 py-2 border border-[#d1d5db] rounded-xl bg-white text-[#111827] w-40"
                     />
                 </div>
+                {/* <div className="mb-4 flex gap-2 items-center">
+                    <DatePicker
+                        selected={dueDate}
+                        onChange={(date: Date | null) => setDueDate(date)}
+                        dateFormat="yyyy-MM-dd"
+                        placeholderText="마감일 선택"
+                        className="px-4 py-2 border border-[#d1d5db] rounded-xl bg-white text-[#111827] w-40"
+                    />
+                </div> */}
 
                 {/* <ul className="space-y-2">
                     {todos.map((todo) => (
@@ -436,6 +459,15 @@ export default function TodoPage() {
                                 <span className="font-semibold text-[#111827]">
                                     {todo.title}
                                 </span>
+                                {todo.dueDate && (
+                                    <div className="text-xs text-gray-500 mt-1">
+                                        마감일:{" "}
+                                        {new Date(
+                                            todo.dueDate
+                                        ).toLocaleDateString()}
+                                    </div>
+                                )}
+
                                 {todo.tag && (
                                     <span className="ml-2 text-xs bg-[#dbeafe] text-[#2563eb] px-2 py-1 rounded">
                                         #{todo.tag}
@@ -453,11 +485,19 @@ export default function TodoPage() {
                                 </button>
 
                                 <button
-                                    onClick={() =>
-                                        setTodos((prev) =>
-                                            prev.filter((t) => t.id !== todo.id)
-                                        )
-                                    }
+                                    onClick={async () => {
+                                        try {
+                                            await deleteTodo(todo.id); // 서버 삭제 요청
+                                            setTodos((prev) =>
+                                                prev.filter(
+                                                    (t) => t.id !== todo.id
+                                                )
+                                            ); // 상태 업데이트
+                                        } catch (err) {
+                                            console.error("삭제 실패:", err);
+                                            alert("삭제에 실패했습니다.");
+                                        }
+                                    }}
                                     className="p-2 rounded-full bg-[#fee2e2] text-[#dc2626] hover:bg-[#fecaca] transition"
                                     title="삭제"
                                 >

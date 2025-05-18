@@ -183,7 +183,7 @@
 //     return data;
 // }
 
-const API_BASE_URL = "https://223.130.157.191:8080";
+const API_BASE_URL = "http://localhost:8080";
 //const API_BASE_URL = "https://www.todotogether.xyz";
 
 function isErrorResponse(data: unknown): data is { message: string } {
@@ -195,13 +195,46 @@ function isErrorResponse(data: unknown): data is { message: string } {
     );
 }
 
+// export async function apiFetch<T = unknown>(
+//     path: string,
+//     options: RequestInit = {}
+// ): Promise<T> {
+//     const token = localStorage.getItem("token");
+
+//     // const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}${path}`, {
+//     const res = await fetch(`${API_BASE_URL}${path}`, {
+//         ...options,
+//         headers: {
+//             "Content-Type": "application/json",
+//             ...(token && { Authorization: `Bearer ${token}` }),
+//             ...options.headers,
+//         },
+//     });
+
+//     let data: unknown;
+//     try {
+//         data = await res.json();
+//     } catch (err) {
+//         console.warn("⚠️ JSON 파싱 실패:", err);
+//         data = null;
+//     }
+
+//     if (!res.ok) {
+//         const errorMessage = isErrorResponse(data)
+//             ? data.message
+//             : `API 요청 실패: ${res.status}`;
+//         throw new Error(errorMessage);
+//     }
+
+//     return data as T;
+// }
+
 export async function apiFetch<T = unknown>(
     path: string,
     options: RequestInit = {}
 ): Promise<T> {
     const token = localStorage.getItem("token");
 
-    // const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}${path}`, {
     const res = await fetch(`${API_BASE_URL}${path}`, {
         ...options,
         headers: {
@@ -211,12 +244,15 @@ export async function apiFetch<T = unknown>(
         },
     });
 
-    let data: unknown;
-    try {
-        data = await res.json();
-    } catch (err) {
-        console.warn("⚠️ JSON 파싱 실패:", err);
-        data = null;
+    const text = await res.text();
+
+    let data: unknown = null;
+    if (text) {
+        try {
+            data = JSON.parse(text);
+        } catch (err) {
+            console.warn("JSON 파싱 실패:", err);
+        }
     }
 
     if (!res.ok) {

@@ -20,4 +20,5 @@ export interface Todo {
     createdAt?: string;
     createdBy?: UserInfo;
     assignedTo?: UserInfo;
+    dueDate?: string;
 }

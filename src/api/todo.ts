@@ -70,36 +70,37 @@ import { apiFetch } from "./api-client";
 import { Todo, TodoStatus } from "@/types/todo";
 import { PersonalDashboardResponse } from "@/types/dashboard";
 
-// 🔹 전체 Todo 조회
+//  전체 Todo 조회
 export async function fetchTodos(): Promise<Todo[]> {
     const result = await apiFetch<Todo[]>("/api/todos");
     return result ?? [];
 }
 
-// 🔹 개인 Todo만 조회
+//  개인 Todo만 조회
 export async function fetchPersonalTodos(): Promise<Todo[]> {
     const result = await apiFetch<Todo[]>("/api/todos/personal");
     return result ?? [];
 }
 
-// 🔹 그룹 Todo 조회
+//  그룹 Todo 조회
 export async function fetchGroupTodos(groupId: number): Promise<Todo[]> {
     const result = await apiFetch<Todo[]>(`/api/todos/group/${groupId}`);
     return result ?? [];
 }
 
-// 🔹 개인 대시보드 통계 데이터
+//  개인 대시보드 통계 데이터
 export async function fetchMyDashboardData(): Promise<PersonalDashboardResponse> {
     return apiFetch<PersonalDashboardResponse>("/api/todos/me/dashboard");
 }
 
-// 🔹 할 일 생성
+//  할 일 생성
 export async function createTodo(
     title: string,
     status: TodoStatus,
     tag: string = "일반",
     body?: string,
-    groupId?: number | null
+    groupId?: number | null,
+    dueDate?: string | null
 ): Promise<Todo> {
     return apiFetch<Todo>("/api/todos", {
         method: "POST",
@@ -109,11 +110,12 @@ export async function createTodo(
             status,
             tag,
             groupId,
+            dueDate,
         }),
     });
 }
 
-// 🔹 할 일 수정
+//  할 일 수정
 export async function updateTodo(
     id: number,
     data: {
@@ -122,10 +124,18 @@ export async function updateTodo(
         status: TodoStatus;
         tag: string;
         assignedTo: number;
+        dueDate?: string | null;
     }
 ): Promise<Todo> {
     return apiFetch<Todo>(`/api/todos/${id}`, {
         method: "PUT",
         body: JSON.stringify(data),
+    });
+}
+
+// 할 일 삭제
+export async function deleteTodo(id: number): Promise<void> {
+    return apiFetch(`/api/todos/${id}/delete`, {
+        method: "DELETE",
     });
 }

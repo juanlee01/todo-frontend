@@ -55,6 +55,7 @@
 //     return result ?? null;
 // }
 import { apiFetch } from "./api-client";
+import { UserInfo } from "@/types/user";
 
 interface AuthResponse {
     accessToken: string;
@@ -65,12 +66,12 @@ interface CheckAvailableResponse {
     available: boolean;
 }
 
-interface UserInfo {
-    userId: number;
-    username: string;
-    email: string;
-    role?: string;
-}
+// interface UserInfo {
+//     userId: number;
+//     username: string;
+//     email: string;
+//     role?: string;
+// }
 
 // 🔹 로그인
 export async function login(
