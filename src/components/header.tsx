@@ -83,14 +83,22 @@ export default function Header() {
                 </Link>
             </div>
 
-            <nav className="space-x-4">
+            <nav className="space-x-4 flex items-center">
                 {user ? (
-                    <Link
-                        href="/me/setting"
-                        className="text-gray-700 hover:text-blue-600"
-                    >
-                        {user.username}
-                    </Link>
+                    <>
+                        <Link
+                            href="/invites"
+                            className="text-sm px-3 py-1.5 bg-green-500 text-white rounded hover:bg-green-600 transition"
+                        >
+                            그룹 초대
+                        </Link>
+                        <Link
+                            href="/me/setting"
+                            className="text-gray-700 hover:text-blue-600"
+                        >
+                            {user.username}
+                        </Link>
+                    </>
                 ) : (
                     <Link
                         href="/login"

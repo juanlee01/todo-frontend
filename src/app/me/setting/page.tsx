@@ -13,7 +13,7 @@ export default function ProfileEditPage() {
     const [username, setUsername] = useState("");
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
-    const [message, setMessage] = useState<string | null>(null);
+    //const [message, setMessage] = useState<string | null>(null);
     const [confirmNewPassword, setConfirmNewPassword] = useState("");
 
     const [passwords, setPasswords] = useState({
@@ -46,12 +46,12 @@ export default function ProfileEditPage() {
             await updateMyProfile({ email });
             setSuccess("정보가 성공적으로 수정되었습니다.");
             setError("");
-        } catch (err) {
-            if (err instanceof Error) {
-                setMessage(err.message);
-            } else {
-                setMessage("알 수 없는 오류가 발생했습니다.");
-            }
+        } catch {
+            // if (err instanceof Error) {
+            //     setMessage(err.message);
+            // } else {
+            //     setMessage("알 수 없는 오류가 발생했습니다.");
+            // }
         }
     };
 

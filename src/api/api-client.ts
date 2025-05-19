@@ -183,8 +183,8 @@
 //     return data;
 // }
 
-const API_BASE_URL = "http://localhost:8080";
-//const API_BASE_URL = "https://www.todotogether.xyz";
+//const API_BASE_URL = "http://localhost:8080";
+const API_BASE_URL = "https://www.todotogether.xyz";
 
 function isErrorResponse(data: unknown): data is { message: string } {
     return (

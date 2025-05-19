@@ -162,6 +162,7 @@ import {
 import { Todo, TodoStatus } from "@/types/todo";
 import { useGroupStore } from "@/store/groupStore";
 import { updateTodo, deleteTodo } from "@/api/todo";
+import { useCallback } from "react";
 
 const statusOptions: { value: TodoStatus; label: string }[] = [
     { value: "PENDING", label: "⏳ 대기 중" },
@@ -258,41 +259,41 @@ export default function TodoPage() {
             alert("할 일을 추가할 수 없습니다.");
         }
     };
-    const sortTodos = (todos: Todo[]): Todo[] => {
-        switch (sortOption) {
-            case "dueDate":
-                return [...todos].sort((a, b) => {
-                    if (!a.dueDate) return 1;
-                    if (!b.dueDate) return -1;
-                    return a.dueDate.localeCompare(b.dueDate);
-                });
-            case "status":
-                const statusOrder: TodoStatus[] = [
-                    "PENDING",
-                    "IN_PROGRESS",
-                    "ON_HOLD",
-                    "REVISION_REQUESTED",
-                    "COMPLETED",
-                    "CANCELED",
-                ];
-                return [...todos].sort(
-                    (a, b) =>
-                        statusOrder.indexOf(a.status) -
-                        statusOrder.indexOf(b.status)
-                );
-            case "createdAt":
-            default:
-                return [...todos].sort((a, b) => {
-                    const aTime = a.createdAt
-                        ? new Date(a.createdAt).getTime()
-                        : 0;
-                    const bTime = b.createdAt
-                        ? new Date(b.createdAt).getTime()
-                        : 0;
-                    return bTime - aTime;
-                });
-        }
-    };
+    // const sortTodos = (todos: Todo[]): Todo[] => {
+    //     switch (sortOption) {
+    //         case "dueDate":
+    //             return [...todos].sort((a, b) => {
+    //                 if (!a.dueDate) return 1;
+    //                 if (!b.dueDate) return -1;
+    //                 return a.dueDate.localeCompare(b.dueDate);
+    //             });
+    //         case "status":
+    //             const statusOrder: TodoStatus[] = [
+    //                 "PENDING",
+    //                 "IN_PROGRESS",
+    //                 "ON_HOLD",
+    //                 "REVISION_REQUESTED",
+    //                 "COMPLETED",
+    //                 "CANCELED",
+    //             ];
+    //             return [...todos].sort(
+    //                 (a, b) =>
+    //                     statusOrder.indexOf(a.status) -
+    //                     statusOrder.indexOf(b.status)
+    //             );
+    //         case "createdAt":
+    //         default:
+    //             return [...todos].sort((a, b) => {
+    //                 const aTime = a.createdAt
+    //                     ? new Date(a.createdAt).getTime()
+    //                     : 0;
+    //                 const bTime = b.createdAt
+    //                     ? new Date(b.createdAt).getTime()
+    //                     : 0;
+    //                 return bTime - aTime;
+    //             });
+    //     }
+    // };
 
     // useEffect(() => {
     //     const loadTodos = async () => {
@@ -336,6 +337,45 @@ export default function TodoPage() {
         (opt) => opt.value === sortOption
     )?.label;
 
+    const sortTodos = useCallback(
+        (todos: Todo[]): Todo[] => {
+            switch (sortOption) {
+                case "dueDate":
+                    return [...todos].sort((a, b) => {
+                        if (!a.dueDate) return 1;
+                        if (!b.dueDate) return -1;
+                        return a.dueDate.localeCompare(b.dueDate);
+                    });
+                case "status":
+                    const statusOrder: TodoStatus[] = [
+                        "PENDING",
+                        "IN_PROGRESS",
+                        "ON_HOLD",
+                        "REVISION_REQUESTED",
+                        "COMPLETED",
+                        "CANCELED",
+                    ];
+                    return [...todos].sort(
+                        (a, b) =>
+                            statusOrder.indexOf(a.status) -
+                            statusOrder.indexOf(b.status)
+                    );
+                case "createdAt":
+                default:
+                    return [...todos].sort((a, b) => {
+                        const aTime = a.createdAt
+                            ? new Date(a.createdAt).getTime()
+                            : 0;
+                        const bTime = b.createdAt
+                            ? new Date(b.createdAt).getTime()
+                            : 0;
+                        return bTime - aTime;
+                    });
+            }
+        },
+        [sortOption]
+    );
+
     useEffect(() => {
         const loadTodos = async () => {
             try {
@@ -359,7 +399,7 @@ export default function TodoPage() {
         if (selectedGroupId !== null) {
             loadTodos();
         }
-    }, [selectedGroupId, sortOption]);
+    }, [selectedGroupId, sortOption, sortTodos]);
 
     return (
         <main className="flex flex-col items-center justify-start min-h-screen pt-16 px-4">
