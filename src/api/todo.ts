@@ -90,7 +90,21 @@ export async function fetchGroupTodos(groupId: number): Promise<Todo[]> {
 
 //  개인 대시보드 통계 데이터
 export async function fetchMyDashboardData(): Promise<PersonalDashboardResponse> {
-    return apiFetch<PersonalDashboardResponse>("/api/todos/me/dashboard");
+    const result = apiFetch<PersonalDashboardResponse>(
+        "/api/todos/me/dashboard"
+    );
+    console.log(result);
+    return result ?? [];
+}
+
+export async function fetchGroupDashboardData(
+    groupId: number
+): Promise<PersonalDashboardResponse> {
+    const result = apiFetch<PersonalDashboardResponse>(
+        `/api/groups/${groupId}/dashboard`
+    );
+    console.log(result);
+    return result ?? [];
 }
 
 //  할 일 생성

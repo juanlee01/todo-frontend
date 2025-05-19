@@ -36,7 +36,7 @@ export default function AssigneeChart({ data }: Props) {
         labels: usernames,
         datasets: [
             {
-                label: "담당자별 할 일 수",
+                label: "담당자별  Todo 수",
                 data: counts,
                 backgroundColor: "rgba(59, 130, 246, 0.7)", // blue-500
                 borderRadius: 4,
@@ -56,7 +56,7 @@ export default function AssigneeChart({ data }: Props) {
     return (
         <section className="mb-6">
             <h2 className="text-lg font-bold mb-2 text-[#111827]">
-                담당자별 할 일 분포
+                담당자별 Todo 분포
             </h2>
             <Bar data={chartData} options={options} />
         </section>

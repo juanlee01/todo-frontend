@@ -23,8 +23,8 @@ export default function DashboardPage() {
             try {
                 const res = await fetchDashboardData(selectedGroupId);
                 setData(res);
-            } catch (err) {
-                console.error("대시보드 데이터 불러오기 실패", err);
+            } catch {
+                //console.error("대시보드 데이터 불러오기 실패", err);
             }
         };
 
@@ -63,7 +63,7 @@ export default function DashboardPage() {
                     }}
                 />
 
-                <TagChart tags={data.tags} />
+                <TagChart tags={data.tagCounts} />
 
                 <AssigneeChart data={data.todosPerAssignee} />
             </div>

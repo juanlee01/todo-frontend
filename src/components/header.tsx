@@ -54,10 +54,10 @@ export default function Header() {
         const loadUser = async () => {
             try {
                 const me = await fetchMyProfile();
-                console.log("로그인된 사용자:", me);
+                //console.log("로그인된 사용자:", me);
                 setUser(me);
-            } catch (err) {
-                console.error("사용자 정보 불러오기 실패:", err);
+            } catch {
+                //console.error("사용자 정보 불러오기 실패:", err);
                 setUser(null);
             }
         };

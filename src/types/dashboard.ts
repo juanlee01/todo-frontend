@@ -24,7 +24,7 @@ export interface DashboardResponse {
         CANCELED?: number;
     };
     todosPerAssignee: { [username: string]: number };
-    tags: { [tag: string]: number };
+    tagCounts: { [tag: string]: number };
 }
 
 export interface PersonalDashboardResponse {

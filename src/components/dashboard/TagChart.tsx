@@ -70,9 +70,7 @@ const TagChart: FC<TagChartProps> = ({ tags = {} }) => {
     if (labels.length === 0) {
         return (
             <section className="bg-white p-4 rounded-lg shadow text-[#111827]">
-                <h2 className="text-lg font-semibold mb-3">
-                    태그별 할 일 분포
-                </h2>
+                <h2 className="text-lg font-semibold mb-3">태그별 Todo 분포</h2>
                 <p className="text-sm text-gray-500">데이터가 없습니다.</p>
             </section>
         );
@@ -82,7 +80,7 @@ const TagChart: FC<TagChartProps> = ({ tags = {} }) => {
         labels,
         datasets: [
             {
-                label: "태그별 할 일 수",
+                label: "태그별  Todo 수",
                 data: values,
                 backgroundColor: "rgba(59, 130, 246, 0.6)",
             },
@@ -101,7 +99,7 @@ const TagChart: FC<TagChartProps> = ({ tags = {} }) => {
 
     return (
         <section className="bg-white p-4 rounded-lg shadow text-[#111827]">
-            <h2 className="text-lg font-semibold mb-3">태그별 할 일 분포</h2>
+            <h2 className="text-lg font-semibold mb-3">태그별 Todo 분포</h2>
             <Bar data={data} options={options} />
         </section>
     );
