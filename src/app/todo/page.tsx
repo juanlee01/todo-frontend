@@ -163,6 +163,8 @@ import { Todo, TodoStatus } from "@/types/todo";
 import { useGroupStore } from "@/store/groupStore";
 import { updateTodo, deleteTodo } from "@/api/todo";
 import { useCallback } from "react";
+import { useGroupMembershipStore } from "@/store/groupMembershipStore";
+import CommentSection from "@/components/CommentSection";
 
 const statusOptions: { value: TodoStatus; label: string }[] = [
     { value: "PENDING", label: "⏳ 대기 중" },
@@ -197,6 +199,14 @@ export default function TodoPage() {
     >("createdAt");
     const [open, setOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
+
+    const memberships = useGroupMembershipStore((state) => state.memberships);
+    const groupId = useGroupStore((state) => state.selectedGroupId);
+
+    const group = memberships.find((m) => m.groupId === groupId);
+    const groupTitle = group?.groupTitle || "그룹 채팅";
+
+    const [openCommentId, setOpenCommentId] = useState<number | null>(null); // 댓글 열림 상태
 
     const handleEdit = (todo: Todo) => {
         setEditMode(true);
@@ -402,10 +412,10 @@ export default function TodoPage() {
     }, [selectedGroupId, sortOption, sortTodos]);
 
     return (
-        <main className="flex flex-col items-center justify-start min-h-screen pt-16 px-4">
-            <div className="w-full max-w-xl bg-white rounded-2xl shadow-md p-6">
-                <h1 className="text-2xl font-bold text-center mb-4 text-blue-600">
-                    📝 TODO 리스트
+        <main className="h-full w-full flex justify-center items-start px-4 py-6 overflow-y-auto bg-gray-100">
+            <div className="w-full max-w-7xl bg-white rounded-2xl shadow-md p-6">
+                <h1 className="text-3xl font-bold text-center mb-6 text-blue-600">
+                    📝 {groupTitle} TODO
                 </h1>
 
                 <div className="mb-4 flex gap-2 w-full">
@@ -438,7 +448,7 @@ export default function TodoPage() {
                     <input
                         type="text"
                         className="flex-1 px-4 py-2 border border-[#d1d5db] bg-white text-[#111827] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#3b82f6]"
-                        placeholder="제목을 입력하세요"
+                        placeholder="TODO을 입력하세요"
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
                         onCompositionStart={() => setIsComposing(true)}
@@ -506,7 +516,7 @@ export default function TodoPage() {
                     </div>
                 </div>
 
-                <ul className="space-y-2">
+                {/* <ul className="space-y-2">
                     {todos.map((todo) => (
                         <li
                             key={todo.id}
@@ -567,6 +577,137 @@ export default function TodoPage() {
                                     <span className="text-lg">🗑️</span>
                                 </button>
                             </div>
+                        </li>
+                    ))}
+                </ul> */}
+                <ul className="space-y-2">
+                    {todos.map((todo) => (
+                        <li
+                            key={todo.id}
+                            className="bg-[#f3f4f6] px-4 py-2 rounded-xl"
+                        >
+                            <div className="flex justify-between items-center">
+                                <div>
+                                    <span className="text-sm text-[#6b7280] mr-2">
+                                        {
+                                            statusOptions.find(
+                                                (s) => s.value === todo.status
+                                            )?.label
+                                        }
+                                    </span>
+                                    <span className="font-semibold text-[#111827]">
+                                        {todo.title}
+                                    </span>
+
+                                    {todo.tag && (
+                                        <span className="ml-2 text-xs bg-[#dbeafe] text-[#2563eb] px-2 py-1 rounded">
+                                            #{todo.tag}
+                                        </span>
+                                    )}
+                                    {todo.dueDate && (
+                                        <div className="text-xs text-gray-500 mt-1">
+                                            마감일:{" "}
+                                            {new Date(
+                                                todo.dueDate
+                                            ).toLocaleDateString()}
+                                        </div>
+                                    )}
+                                </div>
+
+                                <div className="flex items-center gap-2">
+                                    {/* <button
+                                        onClick={() =>
+                                            setOpenCommentId((prev) =>
+                                                prev === todo.id
+                                                    ? null
+                                                    : todo.id
+                                            )
+                                        }
+                                        className="p-1 text-gray-500 hover:text-blue-500 transition"
+                                        title={
+                                            openCommentId === todo.id
+                                                ? "댓글 숨기기"
+                                                : "댓글 보기"
+                                        }
+                                    >
+                                        <span className="text-lg">
+                                            {openCommentId === todo.id
+                                                ? "✖️"
+                                                : "💬"}
+                                        </span>
+                                    </button> */}
+                                    <div className="flex items-center gap-1">
+                                        {/* 댓글 열기/닫기 토글 버튼 */}
+                                        <button
+                                            onClick={() =>
+                                                setOpenCommentId((prev) =>
+                                                    prev === todo.id
+                                                        ? null
+                                                        : todo.id
+                                                )
+                                            }
+                                            className="p-1 text-gray-500 hover:text-blue-500 transition"
+                                            title={
+                                                openCommentId === todo.id
+                                                    ? "댓글 숨기기"
+                                                    : "댓글 보기"
+                                            }
+                                        >
+                                            <span className="text-lg">
+                                                {openCommentId === todo.id
+                                                    ? "✖️"
+                                                    : "💬"}
+                                            </span>
+                                        </button>
+
+                                        {/* 댓글 수 배지 */}
+                                        <span className="text-xs bg-blue-100 text-blue-600 px-2 py-0.5 rounded-full">
+                                            {todo.commentCount}
+                                        </span>
+                                    </div>
+
+                                    <button
+                                        onClick={() => handleEdit(todo)}
+                                        className="p-2 rounded-full bg-[#e0f2fe] text-[#0284c7] hover:bg-[#bae6fd] transition"
+                                        title="수정"
+                                    >
+                                        <span className="text-lg">⚙️</span>
+                                    </button>
+
+                                    <button
+                                        onClick={async () => {
+                                            try {
+                                                await deleteTodo(todo.id);
+                                                setTodos((prev) =>
+                                                    prev.filter(
+                                                        (t) => t.id !== todo.id
+                                                    )
+                                                );
+                                            } catch (err) {
+                                                console.error(
+                                                    "삭제 실패:",
+                                                    err
+                                                );
+                                                alert("삭제에 실패했습니다.");
+                                            }
+                                        }}
+                                        className="p-2 rounded-full bg-[#fee2e2] text-[#dc2626] hover:bg-[#fecaca] transition"
+                                        title="삭제"
+                                    >
+                                        <span className="text-lg">🗑️</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            {/* 댓글 보기 버튼 */}
+                            <div className="mt-2 text-right"></div>
+
+                            {/* 댓글 컴포넌트 렌더링 */}
+                            {openCommentId === todo.id && (
+                                <div className="mt-4">
+                                    <CommentSection todoId={todo.id} />
+                                </div>
+                            )}
                         </li>
                     ))}
                 </ul>

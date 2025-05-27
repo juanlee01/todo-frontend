@@ -77,13 +77,14 @@
 
 import { apiFetch } from "./api-client";
 import { DashboardResponse } from "@/types/dashboard";
+import { GroupMember } from "@/types/user";
 
 // 📌 공통 타입
-export interface GroupMember {
-    userId: number;
-    username: string;
-    role: "LEADER" | "MEMBER" | "GUEST";
-}
+// export interface GroupMember {
+//     userId: number;
+//     username: string;
+//     role: "LEADER" | "MEMBER" | "GUEST";
+// }
 
 export interface GroupInfo {
     groupId: number;

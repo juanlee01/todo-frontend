@@ -21,4 +21,5 @@ export interface Todo {
     createdBy?: UserInfo;
     assignedTo?: UserInfo;
     dueDate?: string;
+    commentCount: number;
 }

@@ -31,22 +31,51 @@
 //   );
 // }
 
+// import "../styles/globals.css";
+// import Header from "../components/header";
+// import Sidebar from "../components/sidebar";
+// import { ReactNode } from "react";
+// import UserInitializer from "@/components/storecomponent/UserInitializer";
+// import UserGroupMembershipInitializer from "@/components/storecomponent/UserGroupMembershipInitializer";
+// //import GroupMembershipInitializer from "@/components/storecomponent/UserInitializer";
+// //import GroupDropdown from "@/components/GroupDropdown";
+
+// export default function RootLayout({ children }: { children: ReactNode }) {
+//     return (
+//         <html lang="ko" >
+//             <body className="min-h-screen flex flex-col">
+//                 <UserInitializer />
+//                 <UserGroupMembershipInitializer />
+//                 {/* <GroupMembershipInitializer /> */}
+//                 <Header />
+//                 <div className="flex flex-1">
+//                     <Sidebar />
+//                     <main className="flex-1 p-6 bg-gray-50 min-h-[calc(100vh-4rem)]">
+//                         {children}
+//                     </main>
+//                 </div>
+//             </body>
+//         </html>
+//     );
+// }
+
 import "../styles/globals.css";
 import Header from "../components/header";
 import Sidebar from "../components/sidebar";
 import { ReactNode } from "react";
-//import GroupDropdown from "@/components/GroupDropdown";
+import UserInitializer from "@/components/storecomponent/UserInitializer";
+import UserGroupMembershipInitializer from "@/components/storecomponent/UserGroupMembershipInitializer";
 
 export default function RootLayout({ children }: { children: ReactNode }) {
     return (
-        <html lang="ko">
-            <body className="min-h-screen flex flex-col">
+        <html lang="ko" className="h-full">
+            <body className="h-screen flex flex-col">
+                <UserInitializer />
+                <UserGroupMembershipInitializer />
                 <Header />
-                <div className="flex flex-1">
+                <div className="flex flex-1 overflow-hidden">
                     <Sidebar />
-                    <main className="flex-1 p-6 bg-gray-50 min-h-[calc(100vh-4rem)]">
-                        {children}
-                    </main>
+                    <main className="flex-1 overflow-y-auto">{children}</main>
                 </div>
             </body>
         </html>

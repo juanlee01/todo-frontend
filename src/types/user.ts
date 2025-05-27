@@ -8,9 +8,12 @@ export interface User {
 }
 
 export interface GroupMember {
+    groupTitle: string;
+    groupId: number;
     userId: number;
     username: string;
     email?: string;
+    nickname: string;
     role: "LEADER" | "MEMBER" | "GUEST";
 }
 

@@ -13,11 +13,8 @@ export default function Sidebar() {
             : "#";
 
     return (
-        <aside className="w-48 bg-white text-gray-800 p-4 h-[calc(100vh-4rem)] border-r">
+        <aside className="w-48 bg-white text-gray-800 p-4 h-full border-r overflow-y-auto">
             <div className="space-y-4">
-                {/* <Link href="/" className="block hover:text-blue-400">
-                    홈
-                </Link> */}
                 <Link href="/todo" className="block hover:text-blue-400">
                     할 일
                 </Link>
@@ -31,15 +28,20 @@ export default function Sidebar() {
                 )}
                 {typeof selectedGroupId === "number" && selectedGroupId > 0 && (
                     <Link
+                        href={`/groups/${selectedGroupId}/chat`}
+                        className="block hover:text-blue-400"
+                    >
+                        그룹채팅
+                    </Link>
+                )}
+                {typeof selectedGroupId === "number" && selectedGroupId > 0 && (
+                    <Link
                         href={`/groups/${selectedGroupId}/settings`}
                         className="block hover:text-blue-400"
                     >
                         ⚙ 그룹설정
                     </Link>
                 )}
-                {/* <Link href="/login" className="block hover:text-blue-400">
-                    🔑 로그인
-                </Link> */}
             </div>
         </aside>
     );
