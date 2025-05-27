@@ -1,7 +1,8 @@
 export interface CommentDto {
     id: number;
     todoId: number;
-    authorName: string;
+    groupNickname?: string; // 그룹 닉네임
+    createdId?: number;
     content: string;
     createdAt: string;
 }

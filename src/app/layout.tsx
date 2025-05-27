@@ -69,7 +69,7 @@ import UserGroupMembershipInitializer from "@/components/storecomponent/UserGrou
 export default function RootLayout({ children }: { children: ReactNode }) {
     return (
         <html lang="ko" className="h-full">
-            <body className="h-screen flex flex-col">
+            <body className="h-screen flex flex-col  bg-white">
                 <UserInitializer />
                 <UserGroupMembershipInitializer />
                 <Header />
